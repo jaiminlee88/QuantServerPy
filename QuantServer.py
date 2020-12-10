@@ -6,9 +6,9 @@ import time
 import re
 import sqlite3
 import urllib
-import urllib3
 import Algorithmlib as alg
 import Sharedefine as sd
+import pandas as pd
 
 def cal():
     array1= [7,1,5,3,6,4]
@@ -20,17 +20,25 @@ def cal():
     pass
 
 def trace(inURL):
-    if inURL=="":
-        return
-    http = urllib3.PoolManager()
-    r = http.request('GET',inURL,preload_content=False)
-    for i in r.stream(32):
-        print(i)
-    r.release_conn()
     pass
 
+'''
+Input: a raw dataframe downloaded from datavendor
+Return: a dataframe with data only in market open time
+'''
+def Init(df):
+    if df is None:
+        return None
+    df.rename(inplace=True,columns=sd.option_ch2en)
+    return
 
-def raw2tick():
+def raw2tick(df, symbol='IH'):
+    if df is None:
+        return None
+    df.drop(df[(df.LastModifyTime<u'09:00:00')].index,inplace=True)
+    df.drop(df[(df.LastModifyTime >= u'10:15:00') & (df.LastModifyTime < u'10:30:00')].index, inplace=True)
+    df.drop(df[(df.LastModifyTime >= u'11:30:00') & (df.LastModifyTime < u'13:30:00')].index, inplace=True)
+    df.drop(df[(df.LastModifyTime > u'15:00:00')].index, inplace=True)
     pass
 
 def get_trade_time():
@@ -40,6 +48,9 @@ def tick2min():
     pass
 
 if __name__ == "__main__":
+    csv = pd.read_csv('./rawdata/rb2005_20200228.csv',encoding='gb2312')
+    Init(csv)
+    raw2tick(csv,'I')
     #trace('http://www.baidu.com/')
     cal()
     pass
