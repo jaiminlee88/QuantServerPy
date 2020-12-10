@@ -8,6 +8,7 @@ import sqlite3
 import urllib
 import urllib3
 import Algorithmlib as alg
+import Sharedefine as sd
 
 def cal():
     array1= [7,1,5,3,6,4]
@@ -27,6 +28,17 @@ def trace(inURL):
         print(i)
     r.release_conn()
     pass
+
+
+def raw2tick():
+    pass
+
+def get_trade_time():
+    pass
+
+def tick2min():
+    pass
+
 if __name__ == "__main__":
     #trace('http://www.baidu.com/')
     cal()
